@@ -1,0 +1,131 @@
+%! Author = ashutosh
+%! Date = 3/22/22
+%! Author = ashutosh
+%! Date = 3/15/22
+
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[letterpaper]{geometry}
+\usepackage{amsmath, amssymb, enumerate, physics}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{epstopdf}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{textcomp}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+    }
+
+\title{\mathbf{Discussion Quiz \#9}}
+\author{{Ashutosh Tiwari (ashutiwa@iu.edu)}}
+
+\begin{document}
+\maketitle
+
+\section{Papers}
+\subsection{Paper 1}
+    \href{https://arxiv.org/pdf/2103.15808.pdf}{CvT}
+\subsection{Paper 2}
+    \href{https://arxiv.org/pdf/2104.05707.pdf}{LocalViT}
+
+\section{Questions}
+
+\subsection{Describe the architecture of the Convolutional Transformer Block shown in Fig. 2 (b). (3 pts)}
+
+Convolutional Transformer Block is an attempt to introduce local receptive fields and shared weights in transformer architecture. A Convolutional Block is collection of Convolutional Projection followed by multi-head self attention which is followed by layer normalization. Each block ends with a set of fully connected layers called MLP. This block is repeated several times in the transformer architecture.
+
+\subsection{True or False. (3 pts)}
+\subsubsection{CvT uses positional encoding like all other Transformer based models.}
+
+False, authors point out that they didn't notice any significant improvement with positional embeddings and thus decided to remove them.
+
+\subsubsection{CvT uses MLP for projection for attention.}
+
+False, CvT uses a depth wise convolutional operation for convolutional projetion, which is fed to attention block. 
+
+\subsubsection{Just like ViT, CvT also uses non-overlapping token embedding.}
+
+No, CvT uses overlapping token embeddings.
+
+\subsection{CvT architecture design introduces convolutions to two core sections of the ViT architecture. Describe in detail these two core section modifications. (4 pts)}
+
+The two core sections where CvT architecture introduces convolutions are:
+\begin{enumerate}
+    \item Beginning of each stage has a convolutional token embedding that performs an overlapping convolutional operation. This allows model to capture spatially local information and achieve spatial downsampling while increasing the number of feature maps.
+    
+    \item Secondly linear projection is replaced by convolutional projection. This allows both decrease in computational complexity as well as capturing of local spatial context and reduce attention ambiguity.
+\end{enumerate}
+
+\subsection{ Describe briefly. (4 pts)}
+\subsubsection{Squeezed convolutional projection}
+
+A squeezed convolutional projection is the process of scaling an input channel to a single numerical value. In the paper we are discussing it is implemented as $1\times 1$ convolutional layers through which input is passed then allowed to expand. 
+However in general, it can take many forms. In some papers, a different value less than the previous layer is used and in some cases an Average pooling is used.
+
+\subsubsection{Why the original position-wise linear projection for multi-head self-attention is replaced with depth-wise separable convolutions in the convolutional projection layer.}
+
+This allows both decrease in computational complexity as well as capturing of local spatial context and reduce attention ambiguity. The third benefit is a simplified design at almost no additional cost. 
+
+\subsubsection{Global context fusion}
+
+ Global context fusion is the fusion of global and local features to achieve greater performance. This can be done in many ways. In the paper we are discussing it is done by taking the advantage of pyramid structures. In several other papers this is done by concatenating global and local context together.
+
+\subsubsection{Dynamic attention}
+
+Dynamic attention is a mechanism that allows the model to learn to focus on the most relevant parts of the input. This is done by using a softmax function to calculate the attention weights.
+
+\subsection{Describe the two efficiency benefits from the design of the Convolutional Projection layer. (3 pts)}
+
+There are two goals of the Convolutional Projection layer.
+
+\begin{enumerate}
+    \item adds to accurately modelling local spatial context.
+    \item provide a more efficient way of computing attention by permitting the undersampling of attention matrices.
+\end{enumerate}
+
+\subsection{Paper 2 experimentally determines the effectiveness of the locality mechanisms. State at least four conclusions that are drawn from these experiments. (2 pts)}
+
+The four conclusion authors mention are:
+\begin{enumerate}
+    \item Depth wise convolutional projection is more efficient than position-wise linear projection and can alone give a major boost in the performance of the network.
+    \item Activation function after the depth wise convolution is very important in determining the quality of results.
+    \item This locality mechanism used by paper is more important for lower layers.
+    \item Expanding hidden dimension of network results in higher classification accuracy.
+\end{enumerate}
+
+\subsection{Explain how depth-wise convolution is an efficient way to introduce locality into networks? (3 pts)}
+
+In depth wise convolution same convolution filter is applied to all the channels of the input. This is done to reduce the number of parameters and increase the computational efficiency. This strategy can provide precisely the mechanism to capture local context accurately.
+
+\subsection{Why do we need to split and concatenate the class token for every transformer layer in paper 2? (3 pts)}
+
+Since output of 2D depth convolution cannot be used as a native input to the next layer, we need to split and concatenate the class token for every transformer layer. This is done to preserve the locality of the input.
+
+\subsection{Explain briefly, why introducing the locality to the lower layers is more advantageous compared with higher layers. (3 pts)}
+
+Paper proposes that the locality mechanism is more advantageous for lower layers. They suggest that as locality meves to higher layers from lower layers, the accuracy of the network decreases. Intuition behind this is that if depth wise convolution is used in lower layers, then the locality information can be transported to higher layers and thus they can be more accurate. This is also corraborated by the their experiments.
+
+\subsection{Answer briefly: (3 pts)}
+\subsubsection{What is depth-wise convolution?}
+
+In depth wise convolution same convolution filter is applied to all the channels of the input. In it we use we use eah filter channel for just one input channel.
+
+\subsubsection{Locality is an intrinsic property of CNNs, Explain.}
+
+The most important property of CNNs is locality. The locality of a feature is the extent to which it is localized in the input. Convolution operation is a way to capture the locality of the input which is controlled by filter size and stride.
+
+\subsubsection{What are inverted residual blocks?}
+An inverted residual block is a residual block which has an inverted structure. In most cases that is done for computational efficiency. It starts and ends with a convolutional $1\times 1$ layer and in between it has a depth wise convolutional $3\times 3$ layer.
+\bibliography{ashutiwa}
+
+\begin{enumerate}
+\end{enumerate}
+
+
+\end{document}
