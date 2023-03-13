@@ -13,6 +13,7 @@
 \usepackage{hyperref}
 \usepackage{enumitem}
 \usepackage{textcomp}
+\usepackage{amsfonts}
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
@@ -33,6 +34,11 @@ Graphs in general have been used in natural language processing for a long time.
 
 
 Very recently inspired by success of neural networks and graphs, Graph Neural Networks started to gain traction in research circles. In this article we are only focussed for their use in Natural Language Processing, but it is worth noting that they are being increasingly used in other areas as well. 
+
+GNNs learn embeddings for each node (in some case edges) and aggregate those embeddings to produce global graph embeddings. This can be summarized as, $$\boldsymbol{h}_i^{(l)}=f_{filter}(A, \boldsymbol{H}^{(l - 1)})$$ where $A\in \mathbb R^{n\times n}$ is adjacency matrix, $\boldsymbol{H}^{(l-1)}$ and $\boldsymbol{H}^{(l)}$ are the input and output node embeddings at the $l-1$-th GNN layer. $f_{filter}$ can take many forms. Few variations of $f_{filter}$ are \begin{itemize}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   \item \textbf{Spectral based Graph Filters} Several examples of this include Graph Convolutional Networks. Defined as multiplication of a signal $x_i\in\mathbb{R}^n$ with the filter $f_{filter}=diag(\theta)$ parameterized by $\theta\in\mathbb{R}^n$ in the Fourier domain: $$f_{filter}*x_i=Uf(A)U^Tx_i$$ where $U$ is the matrix of eigenvectors of the normalized graph Laplacian $L=I_n-D^{-1/2}AD^{-1/2}$. However in most cases computation of the full eigen-decomposition is very expensive. This is where approximations such as using Chebyshev polynomials and Fourier basis functions come handy and try to approximate this equation.
+                                                                                                                                                                                                                                                                                                                                                                                                          \item \textbf{Spatial based Graph Filters} In this case
+\end{itemize}
 
 \bibliographystyle{alpha}
 
